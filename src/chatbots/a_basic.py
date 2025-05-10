@@ -1,4 +1,6 @@
-# External imports
+# Standard imports
+
+# Third party imports
 from openai import OpenAI
 
 from src.config.parameters import EXIT_WORDS
