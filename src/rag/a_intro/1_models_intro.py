@@ -4,9 +4,9 @@ solutions@datoscout.ec
 """
 
 # External imports
-import requests
 import torch
-from transformers import AutoModelForMaskedLM, AutoTokenizer
+from huggingface_hub import InferenceClient
+from transformers import AutoModelForMaskedLM, AutoTokenizer, pipeline
 
 # Internal imports
 from src.config.settings import HUGGINGFACE_TOKEN
@@ -18,7 +18,7 @@ if is_gpu:
 
 # Variables
 model_str = "distilbert-base-multilingual-cased"
-text = "Machine Learning es el mejor [MASK]"
+text = "Machine Learning es el mejor [MASK] de la historia"
 
 
 def local_model():
@@ -56,21 +56,28 @@ def local_model():
         print(f"{i}: {completed_text}")
 
 
+def local_pipeline():
+    unmasker = pipeline("fill-mask", model="distilbert-base-multilingual-cased")
+    print(unmasker("Hello I'm a [MASK] model."))
+    return
+
+
 def api_model():
     # Call to the HuggingFace API
-    API_URL = f"https://api-inference.huggingface.co/models/{model_str}"
-
-    def query(payload, url):
-        headers = {"Authorization": f"Bearer {HUGGINGFACE_TOKEN}"}
-        response = requests.post(url, headers=headers, json=payload)
-        return response.json()
-
-    data = query({"inputs": text}, API_URL)
-    for i, ans in enumerate(data):
-        completed_text = ans["sequence"]
-        print(f"{i}: {completed_text}")
+    # https://huggingface.co/docs/inference-providers/en/providers/hf-inference
+    client = InferenceClient(provider="hf-inference", token=HUGGINGFACE_TOKEN)
+    try:
+        model_ = "emilyalsentzer/Bio_ClinicalBERT"
+        data = client.fill_mask(text=text, model=model_)
+        # https://huggingface.co/distilbert/distilbert-base-multilingual-cased
+        # This model isn't deployed by any Inference Provider.
+        for i, ans in enumerate(data):
+            completed_text = ans.sequence  # Access sequence attribute directly
+            print(f"{i}: {completed_text}")
+    except Exception as e:
+        print(f"Error calling Hugging Face API: {e}")
 
 
 if __name__ == "__main__":
-    local_model()
     api_model()
+    local_model()

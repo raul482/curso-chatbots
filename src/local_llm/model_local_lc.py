@@ -68,8 +68,8 @@ llm_pipeline = pipeline(
     max_new_tokens=512,
     temperature=0.7,
     do_sample=True,
-    # repetition_penalty=1.5,
-    # no_repeat_ngram_size=3,
+    repetition_penalty=1.3,
+    no_repeat_ngram_size=3,
     return_full_text=False,
 )
 

@@ -1,13 +1,17 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 # checkpoint = "HuggingFaceTB/SmolLM-135M-Instruct"
-checkpoint = "HuggingFaceTB/SmolLM2-360M-Instruct"
-# checkpoint = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
+# checkpoint = "HuggingFaceTB/SmolLM2-360M-Instruct"
+# checkpoint = "microsoft/Phi-3-mini-4k-instruct"
+checkpoint = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 model = AutoModelForCausalLM.from_pretrained(checkpoint)
 
 messages = [
-    {"role": "system", "content": "You are a helpful assistant, you speak spanish."},
+    {
+        "role": "system",
+        "content": "You are a helpful assistant, you speak spanish. Answer to the questions in a short way.",
+    },
     {"role": "user", "content": "Cuál es la mejor manera de cocinar cebollas?"},
 ]
 input_text = tokenizer.apply_chat_template(messages, tokenize=False)

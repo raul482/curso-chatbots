@@ -7,8 +7,8 @@ from src.config.parameters import EXIT_WORDS
 from src.local_llm.client_local import LocalAI
 
 # Initialize the LocalAI client
-# client = LocalAI(model_id="HuggingFaceTB/SmolLM2-1.7B-Instruct", by_api=False)
-client = LocalAI(model_id="microsoft/Phi-3-mini-4k-instruct", by_api=False)
+client = LocalAI(model_id="HuggingFaceTB/SmolLM2-1.7B-Instruct", by_api=False)
+# client = LocalAI(model_id="microsoft/Phi-3-mini-4k-instruct", by_api=False)
 
 
 def initial_message(welcome_message):

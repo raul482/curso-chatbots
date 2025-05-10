@@ -48,7 +48,7 @@ def generate_response(message_history):
     Generate a response from the model.
 
     Args:
-        client (LocalAI): The LocalAI client
+        client (OpenAI): The OpenAI client
         message_history (list): The message history
 
     Returns:
@@ -58,8 +58,8 @@ def generate_response(message_history):
     response = client.chat.completions.create(
         model=OPENAI_COMPLETIONS_MODEL,  # Models: https://platform.openai.com/docs/models/overview
         messages=message_history,
-        temperature=0.7,  # The temperature can range from 0 to 2.
-        max_tokens=256,  # short answers
+        temperature=2.0,  # The temperature can range from 0 to 2.
+        max_tokens=100,  # short answers
         top_p=1.0,
         frequency_penalty=0.0,
         presence_penalty=0.0,

@@ -116,7 +116,7 @@ class LocalAI:
 
         # Initialize the model and tokenizer
         if not self.by_api:
-            self.tokenizer = AutoTokenizer.from_pretrained(self.model_id)
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_id, truncation=True)
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_id,
                 torch_dtype=torch.float16 if self.device == "cuda" else torch.float32,
